@@ -1,0 +1,11 @@
+{
+  "Name": "WorkshoppaHelper",
+  "Author": "Amamai",
+  "Description": "Logistics layer for Workshoppa: pulls project materials from retainers and stashes crafted items when your bags fill up.",
+  "Punchline": "Automates retainer logistics around your FC workshop crafting.",
+  "InternalName": "WorkshoppaHelper",
+  "RepoUrl": "https://github.com/Alama1/InventoryReporter",
+  "DalamudApiLevel": 15,
+  "Tags": ["workshop", "retainer", "workshoppa", "fc"],
+  "ApplicableVersion": "any"
+}

@@ -1,0 +1,17 @@
+<Project Sdk="Dalamud.NET.Sdk/15.0.0">
+  <PropertyGroup>
+    <Version>0.1.6</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+    <!-- DalamudPackager reads these from the csproj, not from manifest.json -->
+    <Name>WorkshoppaHelper</Name>
+    <Author>Amamai</Author>
+    <Description>Logistics layer for Workshoppa: pulls project materials from retainers and stashes crafted items when your bags fill up.</Description>
+    <Punchline>Automates retainer logistics around your FC workshop crafting.</Punchline>
+    <RepoUrl>https://github.com/Alama1/InventoryReporter</RepoUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\manifest.json" />
+  </ItemGroup>
+</Project>
