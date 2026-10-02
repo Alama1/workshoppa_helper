@@ -1,0 +1,62 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  DALAMUD_HOME: /tmp/dalamud
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Download Dalamud assemblies
+        run: |
+          mkdir -p "$DALAMUD_HOME"
+          curl -fL https://goatcorp.github.io/dalamud-distrib/latest.zip -o /tmp/dalamud.zip
+          unzip -q /tmp/dalamud.zip -d "$DALAMUD_HOME"
+
+      - name: Restore
+        run: dotnet restore --locked-mode
+
+      - name: Build
+        run: |
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            dotnet build --no-restore -c Release -p:Version="${GITHUB_REF_NAME#v}"
+          else
+            dotnet build --no-restore -c Release
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WorkshoppaHelper-${{ github.sha }}
+          path: bin/Release/WorkshoppaHelper.dll
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: WorkshoppaHelper-${{ github.sha }}
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: WorkshoppaHelper.dll
